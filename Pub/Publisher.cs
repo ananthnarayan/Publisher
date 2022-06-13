@@ -26,7 +26,7 @@ namespace Vistrian
         int count = 1;
         string url = Defaults.Url;
         string subject = "vistrian";
-        byte[] payload = Encoding.UTF8.GetBytes("hello World");
+        byte[] payload = null;
         string creds = null;
 
         public void Run(string[] args)
@@ -46,11 +46,15 @@ namespace Vistrian
             using (IConnection c = new ConnectionFactory().CreateConnection(opts))
             {
                 sw = Stopwatch.StartNew();
+                string text = System.IO.File.ReadAllText(@"C:\Users\Ananth\source\repos\consulting\input.json");
+                Console.WriteLine(text);
 
-                for (int i = 0; i < count; i++)
-                {
-                    c.Publish(subject, payload);
-                }
+                //TODO: Use the JSON library to read the file and 
+                //change the error code using a random number generator. 
+                payload = Encoding.UTF8.GetBytes(text);
+                Console.WriteLine(payload);
+                c.Publish(subject, payload);
+                
                 c.Flush();
 
                 sw.Stop();
@@ -59,6 +63,7 @@ namespace Vistrian
                 Console.WriteLine("({0} msgs/second).",
                     (int)(count / sw.Elapsed.TotalSeconds));
                 printStats(c);
+
 
             }
         }
@@ -103,23 +108,16 @@ namespace Vistrian
             if (parsedArgs.ContainsKey("-subject"))
                 subject = parsedArgs["-subject"];
 
-            if (parsedArgs.ContainsKey("-payload"))
-                // payload = Encoding.UTF8.GetBytes(parsedArgs["-payload"]);
-                payload = Encoding.UTF8.GetBytes("hello World");
-
             if (parsedArgs.ContainsKey("-creds"))
                 creds = parsedArgs["-creds"];
         }
 
         private void banner()
         {
-            Console.WriteLine("Publishing {0} messages on subject {1}",
-                count, subject);
+            Console.WriteLine("Publishing messages on subject {0}",
+                subject);
             Console.WriteLine("  Url: {0}", url);
             Console.WriteLine("  Subject: {0}", subject);
-            Console.WriteLine("  Count: {0}", count);
-            Console.WriteLine("  Payload is {0} bytes.",
-                payload != null ? payload.Length : 0);
         }
 
         public static void Main(string[] args)
@@ -137,3 +135,6 @@ namespace Vistrian
         }
     }
 }
+
+
+//

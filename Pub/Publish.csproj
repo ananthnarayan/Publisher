@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <Reference Include="NATS.Client">
-      <HintPath>..\..\..\..\Documents\Consulting\Downloads\nats.net-master\nats.net-master\src\NATS.Client\bin\Release\net46\NATS.Client.dll</HintPath>
+      <HintPath>..\..\..\..\..\Documents\Consulting\Downloads\nats.net-master\nats.net-master\src\NATS.Client\bin\Release\net46\NATS.Client.dll</HintPath>
     </Reference>
   </ItemGroup>
 
